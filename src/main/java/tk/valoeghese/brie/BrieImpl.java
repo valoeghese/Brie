@@ -71,8 +71,14 @@ class BrieImpl implements Brie10 {
 		renderers.get(window).hide();
 	}
 
-	static void drawTriangle(int window, float[] vertices) {
-		renderers.get(window).drawTriangle(vertices[0], vertices[1], vertices[2], vertices[3], vertices[4], vertices[5], vertices[6], vertices[7], vertices[8], colour);
+	static void drawTriangles(int window, float[] vertices) {
+		int triangles = vertices.length / 9;
+
+		int offset = 0;
+		while (triangles --> 0) {
+			renderers.get(window).drawTriangle(vertices[offset + 0], vertices[offset + 1], vertices[offset + 2], vertices[offset + 3], vertices[offset + 4], vertices[offset + 5], vertices[offset + 6], vertices[offset + 7], vertices[offset + 8], colour);
+			offset += 9;
+		}
 	}
 
 	static void setColour(float r, float g, float b) {

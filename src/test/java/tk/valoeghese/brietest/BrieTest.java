@@ -23,7 +23,10 @@ public final class BrieTest {
 		float[] triangleVerts2 = {
 				-0.2f, 0.0f, -1.0f,
 				0.8f, 0.0f, -1.0f,
-				0.3f, 1.0f, -1.0f
+				0.3f, 1.0f, -1.0f,
+				-0.6f, 0.2f, -1.0f,
+				0.4f, 0.0f, -1.0f,
+				0.1f, 1.0f, -1.0f
 		};
 
 		brieGlobalPropertyi(BRIE_DEPTH_BUFFER, BRIE_TRUE);
@@ -34,10 +37,10 @@ public final class BrieTest {
 			brieClearBuffers(window);
 
 			brieBindColour(1.0f, 1.0f, 0.0f);
-			brieDrawTriangle(window, triangleVerts);
+			brieDrawTriangles(window, triangleVerts);
 
 			brieBindColour(0.0f, 1.0f, 1.0f);
-			brieDrawTriangle(window, triangleVerts2);
+			brieDrawTriangles(window, triangleVerts2);
 
 			brieSwapBuffers(window);
 

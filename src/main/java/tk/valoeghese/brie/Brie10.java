@@ -68,8 +68,8 @@ public interface Brie10 {
 		BrieImpl.hideWindow(window);
 	}
 
-	static void brieDrawTriangle(int window, float[] vertices) {
-		BrieImpl.drawTriangle(window, vertices);
+	static void brieDrawTriangles(int window, float[] vertices) {
+		BrieImpl.drawTriangles(window, vertices);
 	}
 
 	static void brieBindColour(float red, float green, float blue) {
