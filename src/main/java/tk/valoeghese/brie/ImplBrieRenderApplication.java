@@ -169,6 +169,10 @@ public class ImplBrieRenderApplication extends Application {
 				throw new RuntimeException(e);
 			}
 		}
+
+		boolean isShowing() {
+			return this.stage.isShowing();
+		}
 	}
 
 	static void begin() {

@@ -63,6 +63,10 @@ class BrieImpl implements Brie10 {
 		return renderers.get(window).pollWindowClosing();
 	}
 
+	static boolean isWindowHidden(int window) {
+		return !renderers.get(window).isShowing();
+	}
+
 	static void closeWindow(int window) {
 		renderers.get(window).exit();
 	}

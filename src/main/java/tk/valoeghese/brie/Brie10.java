@@ -38,6 +38,10 @@ public interface Brie10 {
 		BrieImpl.showWindow(window);
 	}
 
+	/**
+	 * Swaps the render and write buffers of the said window.
+	 * @param window the id of the window for which to swap the buffers.
+	 */
 	static void brieSwapBuffers(int window) {
 		BrieImpl.swapBuffers(window);
 		try {
@@ -47,12 +51,16 @@ public interface Brie10 {
 		}
 	}
 
+	/**
+	 * Clear the write buffers of the window provided.
+	 * @param window the id of the brie window object for which to clear the buffers
+	 */
 	static void brieClearBuffers(int window) {
 		BrieImpl.clearBuffer(window);
 	}
 
 	/**
-	 * Checks if the window is hidden. If it is, close the window.
+	 * Checks if the window is hidden. If it is, close the window. The window may be hidden due to the actions of your or other programs, or due to the user pressing the close button on the window.
 	 * @param window the id of the brie window object
 	 * @return whether the window is showing
 	 */
@@ -64,10 +72,26 @@ public interface Brie10 {
 		BrieImpl.closeWindow(window);
 	}
 
+	/**
+	 * Hides the specified window. If the window is hidden when {@link #briePollWindowClose(int)} is called, it will cause the window to close.
+	 * @param window the id of the brie window object to hide
+	 */
 	static void brieHideWindow(int window) {
 		BrieImpl.hideWindow(window);
 	}
 
+	static boolean isWindowHidden(int window) {
+		return BrieImpl.isWindowHidden(window);
+	}
+
+	/**
+	 * Draw triangles on the screen.
+	 * @param window the id of the brie window object to which to draw
+	 * @param vertices an array consisting of 3 x/y/z float[3] vertices for each triangle, each coordinate normalised between [-1.0, 1.0] <br/>
+	 * X is defined as going left to right on the screen, <br/>
+	 * Y is defined as going bottom to top on the screen, <br/>
+	 * Z is defined as going far to near on the screen.
+	 */
 	static void brieDrawTriangles(int window, float[] vertices) {
 		BrieImpl.drawTriangles(window, vertices);
 	}
