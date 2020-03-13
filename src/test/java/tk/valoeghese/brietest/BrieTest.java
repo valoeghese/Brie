@@ -10,17 +10,17 @@ public final class BrieTest {
 
 		brieWindowPropertyi(window, BRIE_WINDOW_HEIGHT, 300);
 		brieWindowPropertyi(window, BRIE_WINDOW_WIDTH, 500);
-		brieWindowPropertys(window, BRIE_WINDOW_TITLE, "My Application");
-
+		brieWindowTitle(window, "My Application");
+		
 		brieShowWindow(window);
 
-		float[] triangleVerts = {
+		float[] vertices1 = {
 				0.0f, 0.0f, 0.0f,
 				1.0f, 0.0f, 0.0f,
 				0.5f, 1.0f, 0.0f
 		};
 
-		float[] triangleVerts2 = {
+		float[] vertices2 = {
 				-0.2f, 0.0f, -1.0f,
 				0.8f, 0.0f, -1.0f,
 				0.3f, 1.0f, -1.0f,
@@ -29,18 +29,24 @@ public final class BrieTest {
 				0.1f, 1.0f, -1.0f
 		};
 
+		int object1 = brieCreateRenderObject();
+		brieRenderObjectDatafv(object1, BRIE_RENDER_OBJECT_COLOUR, new float[] {1.0f, 1.0f, 0.0f});
+		brieRenderObjectDatafv(object1, BRIE_RENDER_OBJECT_VERTICES, vertices1);
+
+		int object2 = brieCreateRenderObject();
+		brieRenderObjectDatafv(object2, BRIE_RENDER_OBJECT_COLOUR, new float[] {0.0f, 1.0f, 1.0f});
+		brieRenderObjectDatafv(object2, BRIE_RENDER_OBJECT_VERTICES, vertices2);
+
 		brieGlobalPropertyi(BRIE_DEPTH_BUFFER, BRIE_TRUE);
+		brieBindWindow(window);
 
 		long time = System.currentTimeMillis();
 		int frames = 0;
 		while (briePollWindowClose(window)) {
 			brieClearBuffers(window);
 
-			brieBindColour(1.0f, 1.0f, 0.0f);
-			brieDrawTriangles(window, triangleVerts);
-
-			brieBindColour(0.0f, 1.0f, 1.0f);
-			brieDrawTriangles(window, triangleVerts2);
+			brieDrawRenderObjectTriangles(object1);
+			brieDrawRenderObjectTriangles(object2);
 
 			brieSwapBuffers(window);
 

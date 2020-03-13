@@ -7,17 +7,28 @@ import tk.valoeghese.brie.ImplBrieRenderApplication.BrieRenderer;
 
 class BrieImpl implements Brie10 {
 	private static BrieObjectList<BrieRenderer> renderers = new BrieObjectList<>();
-	private static Color colour = Color.WHITE;
+	private static BrieObjectList<BrieRenderObject> renderObjects = new BrieObjectList<>();
+	private static Color boundColour = Color.WHITE;
+	private static BrieRenderer boundWindow = null;
 	private static int[] propertyDefaults = {0};
 	private static int[] globalProperties;
 
 	static boolean init() {
-		renderers.init();
-		return true;
+		try {
+			renderers.init();
+			renderObjects.init();
+			return true;
+		} catch (Throwable e) {
+			return false;
+		}
 	}
 
 	static int createWindow() {
 		return renderers.newObject(new BrieRenderer());
+	}
+
+	static int createRenderObject() {
+		return renderObjects.newObject(new BrieRenderObject());
 	}
 
 	static void setWindowPropertyInt(int window, int windowProperty, int value) {
@@ -31,12 +42,8 @@ class BrieImpl implements Brie10 {
 		}
 	}
 
-	static void setWindowPropertyStr(int window, int windowProperty, String value) {
-		switch (windowProperty) {
-		case BRIE_WINDOW_TITLE:
-			renderers.get(window).setTitle(value);
-			break;
-		}
+	static void setWindowTitle(int window, String title) {
+		renderers.get(window).setTitle(title);
 	}
 
 	static void showWindow(int window) {
@@ -75,18 +82,32 @@ class BrieImpl implements Brie10 {
 		renderers.get(window).hide();
 	}
 
-	static void drawTriangles(int window, float[] vertices) {
+	static void bindWindow(int window) {
+		boundWindow = renderers.get(window);
+	}
+
+	static void drawTriangles(float[] vertices) {
 		int triangles = vertices.length / 9;
 
 		int offset = 0;
 		while (triangles --> 0) {
-			renderers.get(window).drawTriangle(vertices[offset + 0], vertices[offset + 1], vertices[offset + 2], vertices[offset + 3], vertices[offset + 4], vertices[offset + 5], vertices[offset + 6], vertices[offset + 7], vertices[offset + 8], colour);
+			boundWindow.drawTriangle(vertices[offset + 0], vertices[offset + 1], vertices[offset + 2], vertices[offset + 3], vertices[offset + 4], vertices[offset + 5], vertices[offset + 6], vertices[offset + 7], vertices[offset + 8], boundColour);
 			offset += 9;
 		}
 	}
 
+	static void drawRenderObjectTriangles(int roId) {
+		BrieRenderObject renderObject = renderObjects.get(roId);
+
+		if (renderObject.colour != null) {
+			boundColour = renderObject.colour;
+		}
+
+		drawTriangles(renderObject.vertices);
+	}
+
 	static void setColour(float r, float g, float b) {
-		colour = Color.rgb((int) (r * 255), (int) (g * 255), (int) (b * 255));
+		boundColour = Color.rgb((int) (r * 255), (int) (g * 255), (int) (b * 255));
 	}
 
 	static void setPropertyInt(int property, int value) {
@@ -97,9 +118,33 @@ class BrieImpl implements Brie10 {
 		return globalProperties[BRIE_DEPTH_BUFFER] == 1;
 	}
 
+	static void renderObjectDataFV(int renderObject, int dataType, float[] data) {
+		BrieRenderObject object = renderObjects.get(renderObject);
+
+		switch (dataType) {
+		case BRIE_RENDER_OBJECT_COLOUR:
+			object.colour = data == BRIE_NO_DATA_FV ? null : Color.rgb((int) (data[0] * 255), (int) (data[1] * 255), (int) (data[2] * 255));
+			break;
+		case BRIE_RENDER_OBJECT_VERTICES:
+			object.vertices = copyFV(data);
+			break;
+		}
+	}
+
+	private static float[] copyFV(float[] in) {
+		float[] result = new float[in.length];
+		System.arraycopy(in, 0, result, 0, in.length);
+		return result;
+	}
+
+	private static int[] copyIV(int[] in) {
+		int[] result = new int[in.length];
+		System.arraycopy(in, 0, result, 0, in.length);
+		return result;
+	}
+
 	static {
-		globalProperties = new int[propertyDefaults.length];
-		System.arraycopy(propertyDefaults, 0, globalProperties, 0, propertyDefaults.length);
+		globalProperties = copyIV(propertyDefaults);
 	}
 }
 
@@ -108,6 +153,7 @@ class BrieObjectList<T> {
 
 	void init() {
 		this.list = new ArrayList<>();
+		this.list.add(null); // null first object
 	}
 
 	private ArrayList<T> getList() throws BrieNotInitializedException {
@@ -127,4 +173,9 @@ class BrieObjectList<T> {
 		this.getList().add(t);
 		return result;
 	}
+}
+
+class BrieRenderObject {
+	Color colour = null;
+	float[] vertices;
 }
