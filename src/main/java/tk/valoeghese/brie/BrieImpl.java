@@ -2,16 +2,24 @@ package tk.valoeghese.brie;
 
 import java.util.ArrayList;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+
 import javafx.scene.paint.Color;
 import tk.valoeghese.brie.ImplBrieRenderApplication.BrieRenderer;
 
 class BrieImpl implements Brie10 {
 	private static BrieObjectList<BrieRenderer> renderers = new BrieObjectList<>();
 	private static BrieObjectList<BrieRenderObject> renderObjects = new BrieObjectList<>();
+	private static BrieObjectList<BrieShaderObject> shaderObjects = new BrieObjectList<>();
+
 	private static Color boundColour = Color.WHITE;
 	private static BrieRenderer boundWindow = null;
 	private static int[] propertyDefaults = {0};
 	private static int[] globalProperties;
+
+//	static ScriptEngineManager sem = new ScriptEngineManager();
+//	static ScriptEngine nashorn = sem.getEngineByName("nashorn");
 
 	static boolean init() {
 		try {
@@ -29,6 +37,21 @@ class BrieImpl implements Brie10 {
 
 	static int createRenderObject() {
 		return renderObjects.newObject(new BrieRenderObject());
+	}
+
+	static int createShaderObject() {
+		return shaderObjects.newObject(new BrieShaderObject());
+	}
+
+	static void compileShader(int soId, int shaderType, String shaderSource) {
+		BrieShaderObject shaderObject = shaderObjects.get(soId);
+
+		switch (shaderType) {
+		case BRIE_VERTEX_SHADER:
+			break;
+		case BRIE_COLOUR_SHADER:
+			break;
+		}
 	}
 
 	static void setWindowPropertyInt(int window, int windowProperty, int value) {
@@ -178,4 +201,19 @@ class BrieObjectList<T> {
 class BrieRenderObject {
 	Color colour = null;
 	float[] vertices;
+}
+
+class BrieShaderObject {
+	BrieCompiledVertex vertexShader;
+	BrieCompiledColour colourShader;
+}
+
+@FunctionalInterface
+interface BrieCompiledVertex {
+	float[] position(float[] raw);
+}
+
+@FunctionalInterface
+interface BrieCompiledColour {
+	float[] colour(float[] raw, int x, int y);
 }

@@ -21,6 +21,10 @@ public interface Brie10 {
 	int BRIE_NULL = 0;
 	float[] BRIE_NO_DATA_FV = new float[0];
 
+	int
+	BRIE_VERTEX_SHADER = 0,
+	BRIE_COLOUR_SHADER = 1;
+
 	static boolean brieInit() {
 		return BrieImpl.init();
 	}
