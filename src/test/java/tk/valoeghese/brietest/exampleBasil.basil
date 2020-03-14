@@ -1,0 +1,20 @@
+// create structure
+// structures can only contain "primitives", (float int vec3)
+// though my parsers can treat vec3s as a structure of three floats if they wish
+struct myStructure {
+  int x; // index 0
+  int y; // index 1
+  vec3 value; // index 2
+}
+
+// "global" is a variable of custom structure "_global" defined by the user of the code
+// this will be different depending on the implementation
+
+// main code
+// implicit casting between floats and ints
+myStructure ms = myStructure(global.x, global.y, vec3(global.x + global.y, global.x - global.y, 0.0));
+
+// BDMAS order of operations (brackets, division and multiplication, addition and subtraction)
+ms.value = ms.value * (ms.x * 2 - 5.4);
+
+global.value = ms.value;
