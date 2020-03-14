@@ -2,9 +2,6 @@ package tk.valoeghese.brie;
 
 import java.util.ArrayList;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-
 import javafx.scene.paint.Color;
 import tk.valoeghese.brie.ImplBrieRenderApplication.BrieRenderer;
 
@@ -17,9 +14,6 @@ class BrieImpl implements Brie10 {
 	private static BrieRenderer boundWindow = null;
 	private static int[] propertyDefaults = {0};
 	private static int[] globalProperties;
-
-//	static ScriptEngineManager sem = new ScriptEngineManager();
-//	static ScriptEngine nashorn = sem.getEngineByName("nashorn");
 
 	static boolean init() {
 		try {

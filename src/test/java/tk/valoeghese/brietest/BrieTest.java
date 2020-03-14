@@ -2,8 +2,16 @@ package tk.valoeghese.brietest;
 
 import static tk.valoeghese.brie.Brie10.*;
 
+import java.lang.reflect.Method;
+
 public final class BrieTest {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Throwable{
+		Class<?> shutdown = Class.forName("java.lang.Shutdown");
+		Method method = shutdown.getDeclaredMethod("halt0", int.class);
+		method.setAccessible(true);
+		method.invoke(null, 0);
+		
+		
 		brieInit();
 
 		int window = brieCreateWindow();

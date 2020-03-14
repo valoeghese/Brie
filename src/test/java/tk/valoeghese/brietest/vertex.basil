@@ -1,0 +1,2 @@
+// multiply x by 2
+global.vertex = vec3(global.vertex.x * 2, global.vertex.y, global.vertex.z);
